@@ -24,8 +24,26 @@ let persons = [
     }
 ]
 
+let maxId = Math.max(...persons.map(person => person.id))
+
+let information = [
+  {
+    "numberOfContacts": `phonebook has information for ${maxId} people`,
+    "dateOfQuery": Date()
+  }
+]
+
+//testing route
+app.get('/',  (request, response) => (
+  response.send('get request homepage')
+))
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+  response.json(information)
 })
 
 const PORT = 3001; 
