@@ -42,6 +42,16 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const found = persons.find(person => person.id === id)
+  if(!found) {
+    return response.status(404).send("no person registered")
+  } else {
+    return response.json(found)
+  }
+})
+
 app.get('/info', (request, response) => {
   response.json(information)
 })
