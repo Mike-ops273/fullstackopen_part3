@@ -4,6 +4,7 @@ const app = express()
 
 app.use(express.json())
 
+//data
 let persons = [
     { 
       "id": 1,
@@ -70,8 +71,30 @@ app.post('/api/persons', (request, response) => {
   const id = Math.floor(Math.random() * 1000)
   const newPerson = request.body
   console.log(newPerson)
+
+  if(!newPerson.name) {
+    return response.status(400).send("name missing")
+  } 
+  else if(!newPerson.number) {
+    return response.status(400).send("number is missing")
+  }
+
   newPerson.id = id
-  persons = persons.concat(newPerson)
+  const newPersonObject = {
+    name: newPerson.name,
+    number: newPerson.number,
+    id: newPerson.id
+  }
+
+  const listOfNames = persons.map(person => person.name)
+  console.log(listOfNames)
+  const checkDuplicateNames = listOfNames.includes(newPersonObject.name)
+  console.log(checkDuplicateNames)
+  if (checkDuplicateNames) {
+    return response.status(405).send("duplicated name")
+  }
+
+  persons = persons.concat(newPersonObject)
   response.json(persons)
 })
 
